@@ -8,7 +8,10 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+<<<<<<< HEAD
     "animate.css": "^4.1.1",
+=======
+>>>>>>> 4fd5115e9a52c2ea89ff8f12b6d283d4db53c46a
     "core-js": "^3.8.3",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3",
