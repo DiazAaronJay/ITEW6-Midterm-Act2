@@ -1,5 +1,4 @@
 <template>
-<<<<<<< HEAD
   <div id="app">
     <header class="sticky-header">
       <h1>Product Management</h1>
@@ -15,7 +14,7 @@
           </div>
         </div>
         <div class="row">
-          <ProductList :products="products" />
+          <ProductList :products="products" @add-product="addProduct" />
         </div>
       </div>
     </main>
@@ -24,6 +23,7 @@
 
 <script>
 import ProductList from './components/ProductList.vue';
+import Swal from 'sweetalert2';
 
 export default {
   name: 'App',
@@ -46,8 +46,18 @@ export default {
       ],
     };
   },
+  methods: {
+    addProduct(newProduct) {
+      this.products.push(newProduct);
+      Swal.fire({
+        title: 'Product Added!',
+        icon: 'success',
+      });
+    },
+  },
 };
 </script>
+
 
 <style>
 header {
@@ -93,3 +103,4 @@ main {
   font-size: 30px;
   font-variant: small-caps;
 }
+</style>

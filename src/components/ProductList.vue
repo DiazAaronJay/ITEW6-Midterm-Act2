@@ -2,10 +2,11 @@
   <div class="product-list">
     <div class="list-header">
       <h2>Product List</h2>
-      <button class="add-button">
+      <button class="add-button" @click="addProduct">
         <span class="add-icon">+</span> Add Product
       </button>
     </div>
+    <br >
     <div class="product-grid">
       <div v-for="product in products" :key="product.id" class="product-item">
         <div class="product-card">
@@ -16,7 +17,7 @@
             <p>Price: ${{ product.price }}</p>
             <div class="button-container">
               <button class="edit-btn">Edit</button>
-              <button class="delete-btn">Delete</button>
+              <button class="delete-btn" @click="deleteProduct(product.id)">Delete</button>
             </div>
           </div>
         </div>
@@ -26,12 +27,51 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2';
+
 export default {
   name: 'ProductList',
   props: {
     products: {
       type: Array,
       required: true,
+    },
+  },
+  methods: {
+    addProduct() {
+      Swal.fire({
+        title: 'Add Product',
+        html: `
+          <input id="name" class="swal2-input" placeholder="Name">
+          <input id="description" class="swal2-input" placeholder="Description">
+          <input id="price" class="swal2-input" placeholder="Price">
+        `,
+        showCancelButton: true,
+        confirmButtonText: 'Add Product',
+        cancelButtonText: 'Cancel',
+        preConfirm: () => {
+          const name = Swal.getPopup().querySelector('#name').value;
+          const description = Swal.getPopup().querySelector('#description').value;
+          const price = parseFloat(Swal.getPopup().querySelector('#price').value);
+          if (!name || !description || isNaN(price)) {
+            Swal.showValidationMessage('Please fill in all fields and enter a valid price');
+            return false;
+          }
+          return { name, description, price };
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const { name, description, price } = result.value;
+          const id = this.products.length + 1;
+          const image = 'images/placeholder.png'; // You can set a default image or prompt for image URL
+          const newProduct = { id, name, description, price, image };
+          this.$emit('add-product', newProduct);
+          Swal.fire({
+            title: 'Product Added!',
+            icon: 'success',
+          });
+        }
+      });
     },
   },
 };
