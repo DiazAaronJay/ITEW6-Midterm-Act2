@@ -63,7 +63,7 @@ export default {
         if (result.isConfirmed) {
           const { name, description, price } = result.value;
           const id = this.products.length + 1;
-          const image = 'images/placeholder.png'; // You can set a default image or prompt for image URL
+          const image = 'images/placeholder.png'; 
           const newProduct = { id, name, description, price, image };
           this.$emit('add-product', newProduct);
           Swal.fire({
