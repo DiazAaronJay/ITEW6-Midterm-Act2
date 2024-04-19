@@ -15,7 +15,7 @@
           </div>
         </div>
         <div class="row">
-          <ProductList :products="products" @add-product="addProduct" />
+          <ProductList :products="products" @add-product="addProduct" @delete-product="deleteProduct" />
         </div>
       </div>
     </main>
@@ -24,7 +24,6 @@
 
 <script>
 import ProductList from './components/ProductList.vue';
-import Swal from 'sweetalert2';
 
 export default {
   name: 'App',
@@ -50,15 +49,13 @@ export default {
   methods: {
     addProduct(newProduct) {
       this.products.push(newProduct);
-      Swal.fire({
-        title: 'Product Added!',
-        icon: 'success',
-      });
+    },
+    deleteProduct(productId) {
+      this.products = this.products.filter(product => product.id !== productId);
     },
   },
 };
 </script>
-
 
 <style>
 header {
