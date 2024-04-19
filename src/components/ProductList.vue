@@ -7,22 +7,24 @@
       </button>
     </div>
     <br >
-    <div class="product-grid">
-      <div v-for="product in products" :key="product.id" class="product-item">
-        <div class="product-card">
-          <img :src="product.image" alt="Product Image" class="product-image" />
-          <div class="product-info">
-            <h3>{{ product.name }}</h3>
-            <p>{{ product.description }}</p>
-            <p>Price: ${{ product.price }}</p>
-            <div class="button-container">
-              <button class="edit-btn">Edit</button>
-              <button class="delete-btn" @click="deleteProduct(product.id)">Delete</button>
+    <transition-group name="fade">
+      <div class="product-grid">
+        <div v-for="product in products" :key="product.id" class="product-item">
+          <div class="product-card">
+            <img :src="product.image" alt="Product Image" class="product-image" />
+            <div class="product-info">
+              <h3>{{ product.name }}</h3>
+              <p>{{ product.description }}</p>
+              <p>Price: ${{ product.price }}</p>
+              <div class="button-container">
+                <button class="edit-btn">Edit</button>
+                <button class="delete-btn" @click="confirmDelete(product.id)">Delete</button>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </transition-group>
   </div>
 </template>
 
@@ -72,6 +74,24 @@ export default {
           });
         }
       });
+    },
+    confirmDelete(productId) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'You won\'t be able to revert this!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.deleteProduct(productId);
+        }
+      });
+    },
+    deleteProduct(productId) {
+      this.$emit('delete-product', productId);
     },
   },
 };
@@ -177,5 +197,15 @@ export default {
 
 .delete-btn:hover {
   background-color: #c7391d;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

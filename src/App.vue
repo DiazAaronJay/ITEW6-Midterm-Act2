@@ -1,5 +1,5 @@
 <template>
-  <<<<<<< HEAD
+
   <div id="app">
     <header class="sticky-header">
       <h1>Product Management</h1>
@@ -15,7 +15,9 @@
           </div>
         </div>
         <div class="row">
-          <ProductList :products="products" @add-product="addProduct" />
+          <transition-group name="fade">
+            <ProductList :products="products" @add-product="addProduct" @delete-product="deleteProduct"/>
+          </transition-group>
         </div>
       </div>
     </main>
@@ -55,6 +57,19 @@ export default {
         icon: 'success',
       });
     },
+    deleteProduct(productId) {
+      // Find the index of the product with the given productId
+      const index = this.products.findIndex(product => product.id === productId);
+      if (index !== -1) {
+        // Remove the product from the array
+        this.products.splice(index, 1);
+        // Show a success message
+        Swal.fire({
+          title: 'Product Deleted!',
+          icon: 'success',
+        });
+      }
+    }
   },
 };
 </script>
@@ -103,5 +118,15 @@ main {
   color: #fff;
   font-size: 30px;
   font-variant: small-caps;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.5s;
+}
+
+.fade-enter,
+.fade-leave-to {
+    opacity: 0;
 }
 </style>
