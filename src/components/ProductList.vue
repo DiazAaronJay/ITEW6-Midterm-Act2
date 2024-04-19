@@ -7,18 +7,6 @@
       </button>
     </div>
     <br >
-    <div class="product-grid">
-      <div v-for="product in products" :key="product.id" class="product-item">
-        <div class="product-card">
-          <img :src="product.image" alt="Product Image" class="product-image" />
-          <div class="product-info">
-            <h3>{{ product.name }}</h3>
-            <p>{{ product.description }}</p>
-            <p>Price: ${{ product.price }}</p>
-            <div class="button-container">
-              <button class="edit-btn" @click="editProduct(product)">Edit</button>
-              <button class="delete-btn" @click="deleteProduct(product.id)">Delete</button>
-
     <transition-group name="fade">
       <div class="product-grid">
         <div v-for="product in products" :key="product.id" class="product-item">
@@ -29,7 +17,7 @@
               <p>{{ product.description }}</p>
               <p>Price: ${{ product.price }}</p>
               <div class="button-container">
-                <button class="edit-btn">Edit</button>
+                <button class="edit-btn" @click="editProduct(product)">Edit</button>
                 <button class="delete-btn" @click="confirmDelete(product.id)">Delete</button>
               </div>
             </div>
@@ -37,7 +25,7 @@
         </div>
       </div>
     </transition-group>
-  </div>
+    </div>
 </template>
 
 <script>

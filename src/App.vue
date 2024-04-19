@@ -14,9 +14,8 @@
           </div>
         </div>
         <div class="row">
-          <ProductList :products="products" @add-product="addProduct" @delete-product="deleteProduct" @edit-product="editProduct" />
           <transition-group name="fade">
-            <ProductList :products="products" @add-product="addProduct" @delete-product="deleteProduct"/>
+            <ProductList :products="products" @add-product="addProduct" @delete-product="deleteProduct" @edit-product="editProduct" />
           </transition-group>
         </div>
       </div>
@@ -26,6 +25,7 @@
 
 <script>
 import ProductList from './components/ProductList.vue';
+import Swal from 'sweetalert2';
 
 export default {
   name: 'App',
@@ -53,9 +53,6 @@ export default {
     addProduct(newProduct) {
       this.products.push(newProduct);
     },
-    deleteProduct(productId) {
-      this.products = this.products.filter(product => product.id !== productId);
-    },
     editProduct(product) {
       this.editingProduct = product;
     },
@@ -70,12 +67,9 @@ export default {
       this.editingProduct = null;
     },
     deleteProduct(productId) {
-      // Find the index of the product with the given productId
       const index = this.products.findIndex(product => product.id === productId);
       if (index !== -1) {
-        // Remove the product from the array
         this.products.splice(index, 1);
-        // Show a success message
         Swal.fire({
           title: 'Product Deleted!',
           icon: 'success',
