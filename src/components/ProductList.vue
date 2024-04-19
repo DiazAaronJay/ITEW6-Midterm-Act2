@@ -53,8 +53,12 @@ export default {
           const name = Swal.getPopup().querySelector('#name').value;
           const description = Swal.getPopup().querySelector('#description').value;
           const price = parseFloat(Swal.getPopup().querySelector('#price').value);
-          if (!name || !description || isNaN(price)) {
-            Swal.showValidationMessage('Please fill in all fields and enter a valid price');
+          if (!name || !description) {
+            Swal.showValidationMessage('Please Enter a Name or Description');
+            return false;
+          }
+          if (isNaN(price)) {
+            Swal.showValidationMessage('Enter a Price or valid Price');
             return false;
           }
           return { name, description, price };
@@ -73,6 +77,25 @@ export default {
         }
       });
     },
+    deleteProduct(productId) {
+      Swal.fire({
+        title: 'Are you sure?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.$emit('delete-product', productId);
+          Swal.fire(
+            'Deleted!',
+            'The product has been deleted.',
+            'success'
+          );
+        }
+      });
+    }
   },
 };
 </script>
