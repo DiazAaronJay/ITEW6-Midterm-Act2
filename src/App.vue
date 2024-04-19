@@ -1,5 +1,4 @@
 <template>
-   <<<<<<< HEAD
   <div id="app">
     <header class="sticky-header">
       <h1>Product Management</h1>
