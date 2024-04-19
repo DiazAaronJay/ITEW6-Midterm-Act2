@@ -2,7 +2,7 @@
   <div class="product-list">
     <div class="list-header">
       <h2>Product List</h2>
-      <button class="add-button" @click="addProduct">
+      <button class="add-button" @click="addProduct(product)">
         <span class="add-icon">+</span> Add Product
       </button>
     </div>
@@ -16,7 +16,7 @@
             <p>{{ product.description }}</p>
             <p>Price: ${{ product.price }}</p>
             <div class="button-container">
-              <button class="edit-btn">Edit</button>
+              <button class="edit-btn" @click="editProduct(product)">Edit</button>
               <button class="delete-btn" @click="deleteProduct(product.id)">Delete</button>
             </div>
           </div>
@@ -58,7 +58,7 @@ export default {
             return false;
           }
           if (isNaN(price)) {
-            Swal.showValidationMessage('Enter a Price or valid Price');
+            Swal.showValidationMessage('Please Enter a Price or valid Price');
             return false;
           }
           return { name, description, price };
@@ -72,6 +72,45 @@ export default {
           this.$emit('add-product', newProduct);
           Swal.fire({
             title: 'Product Added!',
+            icon: 'success',
+          });
+        }
+      });
+    },
+    editProduct(product) {
+      Swal.fire({
+        title: 'Edit Product',
+        html: `
+          <input id="name" class="swal2-input" placeholder="Name" value="${product.name}">
+          <input id="description" class="swal2-input" placeholder="Description" value="${product.description}">
+          <input id="price" class="swal2-input" placeholder="Price" value="${product.price}">
+        `,
+        showCancelButton: true,
+        confirmButtonText: 'Save Changes',
+        cancelButtonText: 'Cancel',
+        preConfirm: () => {
+          const name = Swal.getPopup().querySelector('#name').value;
+          const description = Swal.getPopup().querySelector('#description').value;
+          const price = parseFloat(Swal.getPopup().querySelector('#price').value);
+          if (!name || !description) {
+            Swal.showValidationMessage('Please Enter a Name or Description');
+            return false;
+          }
+          if (isNaN(price)) {
+            Swal.showValidationMessage('Please Enter a Price or valid Price');
+            return false;
+          }
+          return { name, description, price };
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const { name, description, price } = result.value;
+          product.name = name;
+          product.description = description;
+          product.price = price;
+          this.$emit('update-product', product);
+          Swal.fire({
+            title: 'Changes saved!',
             icon: 'success',
           });
         }

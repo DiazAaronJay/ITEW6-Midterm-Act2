@@ -1,5 +1,5 @@
 <template>
-  <<<<<<< HEAD
+   <<<<<<< HEAD
   <div id="app">
     <header class="sticky-header">
       <h1>Product Management</h1>
@@ -15,7 +15,7 @@
           </div>
         </div>
         <div class="row">
-          <ProductList :products="products" @add-product="addProduct" @delete-product="deleteProduct" />
+          <ProductList :products="products" @add-product="addProduct" @delete-product="deleteProduct" @edit-product="editProduct" />
         </div>
       </div>
     </main>
@@ -44,6 +44,7 @@ export default {
         { id: 9, name: 'Merch I', description: 'Fruit Basket Merch Bundle', price: 69.00, image: 'images/merch9.png' },
         { id: 10, name: 'Merch J', description: 'MHA Sticker Bundle', price: 120.00, image: 'images/merch10.png' },
       ],
+      editingProduct: null,
     };
   },
   methods: {
@@ -52,6 +53,19 @@ export default {
     },
     deleteProduct(productId) {
       this.products = this.products.filter(product => product.id !== productId);
+    },
+    editProduct(product) {
+      this.editingProduct = product;
+    },
+    saveChanges(editedProduct) {
+      const index = this.products.findIndex(product => product.id === editedProduct.id);
+      if (index !== -1) {
+        this.products.splice(index, 1, editedProduct);
+        this.editingProduct = null;
+      }
+    },
+    cancelEdit() {
+      this.editingProduct = null;
     },
   },
 };
