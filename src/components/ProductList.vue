@@ -116,25 +116,6 @@ export default {
         }
       });
     },
-    deleteProduct(productId) {
-      Swal.fire({
-        title: 'Are you sure?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.$emit('delete-product', productId);
-          Swal.fire(
-            'Deleted!',
-            'The product has been deleted.',
-            'success'
-          );
-        }
-      });
-    }
   },
 };
 </script>
