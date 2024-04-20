@@ -1,5 +1,4 @@
 <template>
-
   <div id="app">
     <header class="sticky-header">
       <h1>Product Management</h1>
@@ -16,7 +15,7 @@
         </div>
         <div class="row">
           <transition-group name="fade">
-            <ProductList :products="products" @add-product="addProduct" @delete-product="deleteProduct"/>
+            <ProductList :products="products" @add-product="addProduct" @delete-product="deleteProduct" @edit-product="editProduct" />
           </transition-group>
         </div>
       </div>
@@ -47,23 +46,30 @@ export default {
         { id: 9, name: 'Merch I', description: 'Fruit Basket Merch Bundle', price: 69.00, image: 'images/merch9.png' },
         { id: 10, name: 'Merch J', description: 'MHA Sticker Bundle', price: 120.00, image: 'images/merch10.png' },
       ],
+      editingProduct: null,
     };
   },
   methods: {
     addProduct(newProduct) {
       this.products.push(newProduct);
-      Swal.fire({
-        title: 'Product Added!',
-        icon: 'success',
-      });
+    },
+    editProduct(product) {
+      this.editingProduct = product;
+    },
+    saveChanges(editedProduct) {
+      const index = this.products.findIndex(product => product.id === editedProduct.id);
+      if (index !== -1) {
+        this.products.splice(index, 1, editedProduct);
+        this.editingProduct = null;
+      }
+    },
+    cancelEdit() {
+      this.editingProduct = null;
     },
     deleteProduct(productId) {
-      // Find the index of the product with the given productId
       const index = this.products.findIndex(product => product.id === productId);
       if (index !== -1) {
-        // Remove the product from the array
         this.products.splice(index, 1);
-        // Show a success message
         Swal.fire({
           title: 'Product Deleted!',
           icon: 'success',
@@ -73,7 +79,6 @@ export default {
   },
 };
 </script>
-
 
 <style>
 header {
